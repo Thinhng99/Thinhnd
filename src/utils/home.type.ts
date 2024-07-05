@@ -9,7 +9,7 @@ type SubCampaign = {
     ads: Ad[];
 };
 
-type CampaignInformation = {
+export type CampaignInformation = {
     name: string;
     describe?: string;
 };
