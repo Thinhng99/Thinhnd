@@ -12,12 +12,12 @@ const CampainTab: React.FC = () => {
     formState: { errors },
   } = useFormContext();
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "subCampaigns", // unique name for your Field Array
-    }
-  );
+  // const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+  //   {
+  //     control, control props comes from useForm (optional: if you are using FormContext)
+  //     name: "subCampaigns", unique name for your Field Array
+  //   }
+  // );
 
   const [active, setActive] = React.useState(0);
   console.log(active, "active");
@@ -27,6 +27,7 @@ const CampainTab: React.FC = () => {
       name: "Chiến dịch 1",
       status: true,
       ads: [{ name: "", quantity: 0 }],
+      id: 0,
     },
   ]);
 
@@ -37,39 +38,10 @@ const CampainTab: React.FC = () => {
         name: `Chiến dịch ${length + 1}`,
         status: true,
         ads: [{ name: "", quantity: 0 }],
+        id: length,
       },
     ]);
     setActive(length);
-  };
-
-  const renderComp = (index: number) => {
-    return (
-      <Grid container>
-        <Grid item xs={8}>
-          <Controller
-            name={`subCampaigns[${index}].name`}
-            control={control}
-            defaultValue={menusBox[index]?.name}
-            render={({ field }) => (
-              <TextFieldComp {...field} label={"Tên chiến dịch"} />
-            )}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <Controller
-            name={`subCampaigns[${index}].status`}
-            control={control}
-            defaultValue={menusBox[index]?.status}
-            render={({ field }) => (
-              <FormControlLabel
-                control={<Checkbox {...field} />}
-                label="Đang hoạt động"
-              />
-            )}
-          />
-        </Grid>
-      </Grid>
-    );
   };
 
   return (
@@ -88,24 +60,62 @@ const CampainTab: React.FC = () => {
         />
         {menusBox?.map((item, index) => (
           <Paper
-            onClick={() => setActive(index - 1)}
-            key={index}
+            onClick={() => setActive(item?.id)}
+            key={item?.id}
             style={{
               minWidth: 200,
               padding: "20px 10px",
               textAlign: "center",
               cursor: "pointer",
               border: "2px solid #ccc",
-              borderColor: `${active === index ? "green" : "#fff"}`,
+              borderColor: `${active === item?.id ? "green" : "#fff"}`,
             }}
           >
-            <span>{`Chiến dịch ${++index}`}</span>
+            <span>{item?.name}</span>
             <CheckCircleIcon color={item?.status ? "success" : "error"} />
             <p>0</p>
           </Paper>
         ))}
       </Box>
-      <>{renderComp(active)}</>
+      <Grid container>
+        <Grid item xs={8}>
+          <TextFieldComp
+            value={menusBox[active]?.name}
+            label={"Tên chiến dịch"}
+            onChange={(e) => {
+              setmenusBox((prev) => {
+                return prev.map((item, index) => {
+                  if (item?.id === active) {
+                    console.log(123);
+                    return { ...item, name: e.target.value };
+                  }
+                  return item;
+                });
+              });
+            }}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={(e) => {
+                  setmenusBox((prev) => {
+                    return prev.map((item) => {
+                      if (item?.id === active) {
+                        return { ...item, status: e.target.checked };
+                      }
+                      return item;
+                    });
+                  });
+                }}
+                checked={menusBox[active]?.status}
+              />
+            }
+            label="Đang hoạt động"
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 };
