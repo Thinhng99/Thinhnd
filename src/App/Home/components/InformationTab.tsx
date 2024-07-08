@@ -19,7 +19,7 @@ const InformationTab: React.FC = () => {
       <Grid item xs={12}>
         <Controller
           control={control}
-          name="name"
+          name="information.name"
           rules={{
             required: true,
           }}
@@ -36,7 +36,7 @@ const InformationTab: React.FC = () => {
       <Grid item xs={12}>
         <Controller
           control={control}
-          name="describe"
+          name="information.describe"
           render={({ field }) => <TextFieldComp {...field} label="Mô tả" />}
         />
       </Grid>

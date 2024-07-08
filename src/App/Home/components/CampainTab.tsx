@@ -19,14 +19,6 @@ const CampainTab: React.FC = () => {
     }
   );
 
-  const handleClickAddCampain = (index: any) => {
-    append({
-      name: `Chiến dịch ${++index}`,
-      status: true,
-      ads: [{ name: "", quantity: 0 }],
-    });
-    setActive(++index);
-  };
   const [active, setActive] = React.useState(0);
   console.log(active, "active");
 
@@ -39,19 +31,46 @@ const CampainTab: React.FC = () => {
   ]);
 
   const handleMenuBox = (length: number) => {
-    console.log(length, "length");
     setmenusBox((prev) => [
       ...prev,
       {
-        name: `Chiến dịch ${++length}`,
+        name: `Chiến dịch ${length + 1}`,
         status: true,
         ads: [{ name: "", quantity: 0 }],
       },
     ]);
-    setActive(length - 1);
+    setActive(length);
   };
 
-  console.log(active);
+  const renderComp = (index: number) => {
+    return (
+      <Grid container>
+        <Grid item xs={8}>
+          <Controller
+            name={`subCampaigns[${index}].name`}
+            control={control}
+            defaultValue={menusBox[index]?.name}
+            render={({ field }) => (
+              <TextFieldComp {...field} label={"Tên chiến dịch"} />
+            )}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <Controller
+            name={`subCampaigns[${index}].status`}
+            control={control}
+            defaultValue={menusBox[index]?.status}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Checkbox {...field} />}
+                label="Đang hoạt động"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+    );
+  };
 
   return (
     <Box>
@@ -69,34 +88,24 @@ const CampainTab: React.FC = () => {
         />
         {menusBox?.map((item, index) => (
           <Paper
-            onClick={() => setActive(index)}
+            onClick={() => setActive(index - 1)}
             key={index}
             style={{
               minWidth: 200,
               padding: "20px 10px",
               textAlign: "center",
+              cursor: "pointer",
               border: "2px solid #ccc",
               borderColor: `${active === index ? "green" : "#fff"}`,
             }}
           >
             <span>{`Chiến dịch ${++index}`}</span>
-            <CheckCircleIcon color="success" />
+            <CheckCircleIcon color={item?.status ? "success" : "error"} />
             <p>0</p>
           </Paper>
         ))}
       </Box>
-      <Grid container>
-        <Grid item xs={8}>
-          <TextFieldComp name="name" label={"Tên chiến dịch"} />
-        </Grid>
-        <Grid item xs={4}>
-          <FormControlLabel
-            name="status"
-            control={<Checkbox defaultChecked />}
-            label="Đang hoạt động"
-          />
-        </Grid>
-      </Grid>
+      <>{renderComp(active)}</>
     </Box>
   );
 };
