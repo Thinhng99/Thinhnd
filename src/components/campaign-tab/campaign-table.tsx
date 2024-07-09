@@ -14,7 +14,6 @@ import { Ad } from "~/types";
 
 interface CampaignFormTableProps {
   indexAds: number;
-  subCampaignData: Ad[];
 }
 const CampaignTable = ({ indexAds }: CampaignFormTableProps) => {
   const {
@@ -27,7 +26,8 @@ const CampaignTable = ({ indexAds }: CampaignFormTableProps) => {
     control,
     name: `subCampaigns[${indexAds}].ads`,
   });
-
+  console.log(indexAds, "indexAds");
+  console.log(fields);
   const handleAddRow = () => {
     append({
       name: `Quảng cáo ${fields.length + 1}`,
@@ -60,7 +60,7 @@ const CampaignTable = ({ indexAds }: CampaignFormTableProps) => {
           </TableHead>
           <TableBody>
             {fields.map((item: any, index) => (
-              <TableRow key={index}>
+              <TableRow key={item?.id}>
                 <TableCell>
                   <Controller
                     name={`subCampaigns[${indexAds}].ads[${index}].name`}

@@ -29,7 +29,7 @@ const CampaignBox = ({
   const watchStatus = watch(`subCampaigns[${index}].status`, true);
   const watchAdsTotal = watch(`subCampaigns[${index}].ads`, 0);
   const totalAds = watchAdsTotal?.reduce((total: any, init: Ad) => {
-    return total + init?.quantity;
+    return total + Number(init?.quantity);
   }, 0);
   return (
     <Card

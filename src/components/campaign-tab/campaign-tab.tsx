@@ -23,7 +23,7 @@ const CampaignTab = () => {
     append({
       name: `Chiến dịch con ${fields.length + 1}`,
       status: true,
-      ads: [{ name: "", quantity: 0 }],
+      ads: [{ name: "Quảng cáo 1", quantity: 0 }],
     });
 
     setActive(fields.length);
@@ -52,7 +52,7 @@ const CampaignTab = () => {
         ))}
       </Box>
       <CampaignForm subCampaignData={fields} index={active} />
-      <CampaignTable tableData={fields} index={active} />
+      <CampaignTable indexAds={active} />
     </>
   );
 };
