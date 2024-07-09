@@ -12,9 +12,11 @@ const CampaignForm = ({ index, subCampaignData }: CampaignFormProps) => {
   const {
     control,
     formState: { errors },
+    setValue,
+    getValues,
   } = useFormContext();
 
-  console.log(subCampaignData[index]?.name); // log có ra data nhưng chưa thể set được vô form
+  console.log(getValues(`subCampaigns[${index}].status`)); // log có ra data nhưng chưa thể set được vô form
 
   return (
     <Grid container>
@@ -22,9 +24,15 @@ const CampaignForm = ({ index, subCampaignData }: CampaignFormProps) => {
         <Controller
           name={`subCampaigns[${index}].name`}
           control={control}
-          defaultValue={subCampaignData[index]?.name}
           render={({ field }) => (
-            <MyTextField {...field} label="Tên chiến dịch" />
+            <MyTextField
+              {...field}
+              value={getValues(`subCampaigns[${index}].name`)}
+              onChange={(e) => {
+                setValue(`subCampaigns[${index}].name`, e.target.value);
+              }}
+              label="Tên chiến dịch"
+            />
           )}
         />
       </Grid>
@@ -32,12 +40,16 @@ const CampaignForm = ({ index, subCampaignData }: CampaignFormProps) => {
         <Controller
           name={`subCampaigns[${index}].status`}
           control={control}
-          defaultValue={subCampaignData[index]?.status}
-          render={({ field }) => (
-            <FormControlLabel
-              control={<Checkbox {...field} />}
-              label="Đang hoạt động"
-            />
+          render={() => (
+            <>
+              <Checkbox
+                checked={getValues(`subCampaigns[${index}].status`)}
+                onChange={(e) => {
+                  setValue(`subCampaigns[${index}].status`, e.target.checked);
+                }}
+              />
+              <span style={{ fontSize: 16 }}>Đang hoạt động</span>
+            </>
           )}
         />
       </Grid>

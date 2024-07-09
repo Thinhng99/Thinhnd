@@ -44,6 +44,7 @@ const CampaignTab = () => {
           <CampaignBox
             key={item.id}
             subCampaign={item}
+            index={index}
             onClick={() => setActive(index)}
             style={{ borderColor: `${active === index ? "#2196f3" : "#fff"}` }}
           />
