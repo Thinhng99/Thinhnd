@@ -1,4 +1,4 @@
-type Ad = {
+export type Ad = {
   name: string;
   quantity: number;
 };

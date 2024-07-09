@@ -6,9 +6,8 @@ import {
   Typography,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { SubCampaign } from "~/types";
+import { Ad, SubCampaign } from "~/types";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import MyTextField from "~components/my-text-field";
 
 interface CampaignBoxProps extends CardProps {
   index: number;
@@ -27,7 +26,11 @@ const CampaignBox = ({
     watch,
     getValues,
   } = useFormContext();
-  const watchShowAge = watch(`subCampaigns[${index}].status`, true);
+  const watchStatus = watch(`subCampaigns[${index}].status`, true);
+  const watchAdsTotal = watch(`subCampaigns[${index}].ads`, 0);
+  const totalAds = watchAdsTotal?.reduce((total: any, init: Ad) => {
+    return total + init?.quantity;
+  }, 0);
   return (
     <Card
       sx={{
@@ -53,10 +56,10 @@ const CampaignBox = ({
           />
           <CheckCircleIcon
             sx={{ fontSize: 14, ml: 1 }}
-            color={watchShowAge ? "success" : "disabled"}
+            color={watchStatus ? "success" : "disabled"}
           />
         </Typography>
-        <Typography variant="h6">{subCampaign.ads.length}</Typography>
+        <Typography variant="h6">{totalAds}</Typography>
       </CardContent>
     </Card>
   );

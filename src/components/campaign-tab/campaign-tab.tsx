@@ -4,6 +4,7 @@ import { Box, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CampaignBox from "./campaign-box";
 import CampaignForm from "./campaign-form";
+import CampaignTable from "./campaign-table";
 
 const CampaignTab = () => {
   const {
@@ -51,6 +52,7 @@ const CampaignTab = () => {
         ))}
       </Box>
       <CampaignForm subCampaignData={fields} index={active} />
+      <CampaignTable tableData={fields} index={active} />
     </>
   );
 };
